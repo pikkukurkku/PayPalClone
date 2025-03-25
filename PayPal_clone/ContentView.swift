@@ -7,27 +7,19 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
     
     @State private var showReferral = true
+    @State var scrollProxy: ScrollViewProxy?
     
     var body: some View {
-        NavigationView {
+        VStack(spacing: 0) {
             ZStack {
                 Color(hex: "#E7EFF6").ignoresSafeArea(.all)
-                ScrollView {
+                BackToTopScrollView(scrollProxy: $scrollProxy) { proxy in
                     VStack  {
-                        HStack {
-                            CircleButton(systemImage: "line.3.horizontal")
-                            Spacer()
-                            CircleButton(systemImage: "questionmark")
-                            CircleButton(systemImage: "qrcode")
-                            NavigationLink(destination: ProfileView()) {
-                                CircleButton(systemImage: "person")
-                            }
-                            .buttonStyle(PlainButtonStyle()) 
-                        }
-                        .padding()
+                        TopMenu()
                         HStack{
                             BalanceTile()
                             Spacer(minLength: 20)
@@ -47,6 +39,7 @@ struct ContentView: View {
                             names:
                                 ["Saman", "Matthieu", "Leon", "Samantha B.", "Leszek M.", "Mario", "Tobi"])
                     }
+                    
                     if showReferral {
                         ReferralInfo(showReferral: $showReferral)
                     }
@@ -57,23 +50,24 @@ struct ContentView: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color.white)
-          
+                            .padding()
+                        
                         VStack (alignment: .leading) {
                             PaymentsList(imageName: "Zalando", merchantName:"Zalando Payments GmbH", dueDate: "13 Mar", paymentType:"Bezahlung nach 30 Tagen", amount:"36,65€", isLastItem: false)
                             PaymentsList(imageName: "Unknown", merchantName:"Mister Spex", dueDate: "15 Mar", paymentType:"Bezahlt", amount:"48€", isLastItem: false)
                             PaymentsList(imageName: "Unknown2", merchantName:"Backwaren GmbH", dueDate: "15 Mar", paymentType:"Bezahlt", amount:"4€", isLastItem: true)
                         }
+                        .padding()
                         .foregroundColor(.black)
                         .padding(.bottom)
                     }
-                    .padding()
+                    
                 }
-                .padding()
-                .padding(.horizontal)
-                .frame(width: UIScreen.main.bounds.width)
-                BottomNav()
+                //   .frame(width: UIScreen.main.bounds.width)
+                
+                BottomNav(scrollProxy: $scrollProxy)
                     .ignoresSafeArea(.all)
-                    .frame(width: UIScreen.main.bounds.width)
+                //    .frame(width: UIScreen.main.bounds.width)
             }
         }
     }

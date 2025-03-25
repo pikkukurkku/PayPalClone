@@ -49,12 +49,12 @@ struct PaymentsList: View {
             .padding(.horizontal)
             if !isLastItem {
                 Rectangle()
-                    .frame(height: 1) // Make the rectangle visible by setting a reasonable height
+                    .frame(height: 1)
                     .foregroundColor(.gray)
-                    .padding(.top) // You can adjust this padding to control space between items
+                    .padding(.top)
             }
         }
-                           .padding(.top, 10) // Add padding to the top to ensure space from the top edge of the rectangle
+                           .padding(.top, 10)
                        }
                    }
 

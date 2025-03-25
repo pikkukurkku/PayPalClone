@@ -13,7 +13,7 @@ struct BalanceTile: View {
         ZStack (alignment: .topLeading) {
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color.white)
-            VStack {
+            VStack  (alignment: .leading)  {
                 Text("PayPal balance")
                     .font(.caption)
                     .foregroundColor(.gray)
@@ -21,6 +21,7 @@ struct BalanceTile: View {
                     .font(.title2)
                     .bold()
                     .foregroundColor(.black)
+                Spacer()
             }
             .padding()
         }

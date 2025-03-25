@@ -7,7 +7,35 @@
 
 import SwiftUI
 
+struct BackToTopScrollView<Content: View>: View {
+    let contentView: (ScrollViewProxy) -> Content
+    @Binding var scrollProxy: ScrollViewProxy?
+    
+    init(scrollProxy: Binding<ScrollViewProxy?>, @ViewBuilder contentView: @escaping (ScrollViewProxy) -> Content) {
+          self._scrollProxy = scrollProxy
+          self.contentView = contentView
+      }
+
+
+  var body: some View {
+    ScrollViewReader { proxy in
+      ScrollView {
+        Color.clear
+          .frame(height: 0)
+          .id("TOP_ID")
+
+        contentView(proxy)
+      }
+      .onAppear {
+          self.scrollProxy = proxy
+      }
+    }
+  }
+}
+
+
 struct BottomNav: View {
+    @Binding var scrollProxy: ScrollViewProxy?
     
     var body: some View {
         VStack {
@@ -17,14 +45,20 @@ struct BottomNav: View {
                     .fill(Color.white)
                     .frame(height: 120)
                     .shadow(color: Color(hex: "#B9BFC5"), radius: 10)
-                HStack (spacing: 60) {
-                    VStack (spacing: 10) {
-                        Image(systemName: "house")
-                            .foregroundColor(.black)
-                        Text("Home")
-                            .font(.caption)
-                            .bold()
-                    }
+                HStack(spacing: 60) {
+                                   Button(action: {
+                                       withAnimation {
+                                           scrollProxy?.scrollTo("TOP_ID", anchor: .top)
+                                       }
+                                   }) {
+                                       VStack(spacing: 10) {
+                                           Image(systemName: "house")
+                                               .foregroundColor(.black)
+                                           Text("Home")
+                                               .font(.caption)
+                                               .foregroundColor(.gray)
+                                       }
+                                   }
                     VStack (spacing: 10) {
                         ZStack {
                             Circle()
@@ -53,8 +87,4 @@ struct BottomNav: View {
             }
         }
     }
-}
-
-#Preview {
-    BottomNav()
 }
