@@ -54,13 +54,15 @@ struct BottomNav: View {
                                        VStack(spacing: 10) {
                                            Image(systemName: "house")
                                                .foregroundColor(.black)
+                                        
                                            Text("Home")
                                                .font(.caption)
                                                .foregroundColor(.gray)
                                        }
-                                       .buttonStyle(PlainButtonStyle())
+                                   
                                        .padding(0)
                                    }
+                                   .buttonStyle(PlainButtonStyle())
                     VStack (spacing: 10) {
                         ZStack {
                             Circle()
