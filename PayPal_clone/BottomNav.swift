@@ -58,6 +58,8 @@ struct BottomNav: View {
                                                .font(.caption)
                                                .foregroundColor(.gray)
                                        }
+                                       .buttonStyle(PlainButtonStyle())
+                                       .padding(0)
                                    }
                     VStack (spacing: 10) {
                         ZStack {

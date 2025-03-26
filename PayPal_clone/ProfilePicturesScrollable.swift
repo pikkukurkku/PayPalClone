@@ -9,8 +9,13 @@ import SwiftUI
 
 struct ProfilePicturesScrollable: View {
     
-    let profileImages: [String]
-    let names: [String]
+    let profileImages: [String] =  [
+        "Unknown", "Unknown2", "Unknown3", "Unknown4", "Unknown5", "Unknown6", "Unknown7"
+    ]
+        
+    let names: [String] = [
+        "Saman", "Matthieu", "Leon", "Samantha B.", "Leszek M.", "Mario", "Tobi"
+    ]
     
     var body: some View {
         VStack (alignment: .leading) {

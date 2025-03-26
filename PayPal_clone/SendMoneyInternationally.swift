@@ -10,8 +10,8 @@ import SwiftUI
 struct SendMoneyInternationally: View {
     
     
-    let systemImages: [String]
-    let textContent: [String]
+    let systemImages: [String] = ["building.columns.fill", "banknote.fill","wallet.pass.fill","circle.filled.iphone.fill"]
+    let textContent: [String] = ["Direct to bank", "Cash pickup", "Mobile money", "Reload phones"]
     
     
     var body: some View {
