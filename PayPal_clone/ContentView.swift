@@ -36,11 +36,12 @@ struct ContentView: View {
                         SendMoneyInternationally()
                         OutstandingPayments()
                     }
-                    BottomNav(scrollProxy: $scrollProxy)
-                        .ignoresSafeArea(.all)
-                }
+                
+                BottomNav(scrollProxy: $scrollProxy)
+                    .ignoresSafeArea(.all)
             }
         }
+    }
     }
 }
 
@@ -55,4 +56,3 @@ struct ContentView_Previews: PreviewProvider {
         }
     }
 }
-
