@@ -23,8 +23,6 @@ struct CircleButton: View {
 }
 
 
-
-
 struct TopMenu: View {
     
     var body: some View {

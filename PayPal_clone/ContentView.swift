@@ -7,23 +7,13 @@
 
 import SwiftUI
 
-//extension UIApplication {
-//    var safeAreaInsets: UIEdgeInsets? {
-//        guard let windowScene = connectedScenes.first as? UIWindowScene,
-//              let window = windowScene.windows.first else { return nil }
-//        return window.safeAreaInsets
-//    }
-//}
-//
-//var edges = UIApplication.shared.safeAreaInsets
+
 
 struct ContentView: View {
     
     @State private var showReferral = true
     @State var scrollProxy: ScrollViewProxy?
-    
     @StateObject var headerData = HeaderViewModel()
-    
     
     init() {
         UIScrollView.appearance().bounces = false
@@ -31,97 +21,86 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            
             ZStack {
                 Color(hex: "#E7EFF6").ignoresSafeArea(.all)
                 VStack(spacing: 0) {
-                    ZStack(alignment: .top, content: {
-                        TopMenu()
-                            .zIndex(1)
-                            .offset(y: headerData.headerOffset)
-                        
-                    })
+                    TopMenu()
+                      // .offset(y: headerData.headerOffset)
                     BackToTopScrollView(scrollProxy: $scrollProxy) { proxy in
-                        
-                        ScrollView(.vertical, showsIndicators: false, content: {
-                            HStack{
-                                BalanceTile()
-                                Spacer(minLength: 20)
-                                InfoTile()
-                            }
-                            .padding()
-                            PayLaterTile()
-                            ProfilePicturesScrollable()
-                            if showReferral {
-                                ReferralInfo(showReferral: $showReferral)
-                            }
-                            SendMoneyInternationally()
-                            OutstandingPayments()
-                            
-                        })
-                        
-                        .overlay(
-                            GeometryReader {proxy -> Color in
-                                let minY = proxy.frame(in: .global).minY
-                             
-                                DispatchQueue.main.async {
-                                    if headerData.startMinY == 0 {
-                                        headerData.startMinY = minY
-                                    }
-                                    let offset = headerData.startMinY - minY
-                                    
-                                    if offset > headerData.offset {
-                            
-                                        headerData.bottomScrollOffset = 0
-                                        
-                                        if headerData.topScrollOffset == 0 {
-                                            headerData.topScrollOffset = offset
-                                        }
-                                        let progress = (headerData.topScrollOffset +
-                                                        getMaxOffset()) - offset
-                                        
-                                        let offsetCondition = (headerData.topScrollOffset + getMaxOffset()) >= getMaxOffset() && getMaxOffset() - progress <= getMaxOffset()
-                                        
-                                        let headerOffset = offsetCondition ? -(getMaxOffset() - progress) : -getMaxOffset()
-                                        
-                                        headerData.headerOffset = headerOffset
-
-                                    }
-                                    if offset < headerData.offset {
-                                        
-                                        headerData.topScrollOffset = 0
-                                        
-                                        if headerData.bottomScrollOffset == 0 {
-                                            headerData.bottomScrollOffset = offset
-                                        }
-                                
-                                    withAnimation(.easeOut(duration: 0.25)) {
-                                        let headerOffset = headerData.headerOffset
-                                        
-                                        headerData.headerOffset =
-                                        headerData.bottomScrollOffset > offset + 40
-                                        ? 0 : (headerOffset != -getMaxOffset() ? 0 : headerOffset)
-                                    }
-                                    }
-                                    headerData.offset = offset
+                        ScrollView(.vertical, showsIndicators: false) {
+                            VStack {
+                                HStack{
+                                    BalanceTile()
+                                    Spacer(minLength: 20)
+                                    InfoTile()
                                 }
-                                return Color.clear
+                                .padding()
+                                PayLaterTile()
+                                ProfilePicturesScrollable()
+                                if showReferral {
+                                    ReferralInfo(showReferral: $showReferral)
+                                }
+                                SendMoneyInternationally()
+                                OutstandingPayments()
                             }
-                                .frame(height: 0),
-                            alignment: .top
-                        )
-                     .frame(width: rect.width - 20)
+                            .overlay(
+                                GeometryReader {proxy -> Color in
+                                    let minY = proxy.frame(in: .global).minY
+
+                                    DispatchQueue.main.async {
+                                        if headerData.startMinY == 0 || minY < headerData.startMinY {
+                                            headerData.startMinY = minY
+                                        }
+                                        let offset = headerData.startMinY - minY
+//                                        print("startMinY: \(headerData.startMinY), minY: \(minY), offset: \(offset), headerOffset: \(headerData.headerOffset)")
+                                        
+                                        if offset > headerData.offset {
+                                            //// THIUS IS THE SCROLL DOWN, WHICH IS NOT WORKING CORRECTLY
+                                         headerData.bottomScrollOffset = 0
+                                            if headerData.topScrollOffset == 0 {
+                                                headerData.topScrollOffset = offset
+                                            }
+                                            let progress = (headerData.topScrollOffset +
+                                                            getMaxOffset()) - offset
+                                            let offsetCondition = (headerData.topScrollOffset + getMaxOffset()) >= getMaxOffset() && getMaxOffset() - progress <= getMaxOffset()
+                                            let headerOffset = offsetCondition ? -(getMaxOffset() - progress) : -getMaxOffset()
+                                            if headerData.headerOffset == 0 {
+                                                headerData.headerOffset = min(0, headerOffset)
+                                            } else {
+                                                headerData.headerOffset = headerOffset
+                                            }
+                                        }
+                                        if offset < headerData.offset {
+                                            
+                                            headerData.topScrollOffset = 0
+                                            if headerData.bottomScrollOffset == 0 {
+                                                headerData.bottomScrollOffset = offset
+                                            }
+                                            withAnimation(.easeOut(duration: 0.25)) {
+                                                let headerOffset = headerData.headerOffset
+                                                headerData.headerOffset =
+                                                headerData.bottomScrollOffset > offset + 40
+                                                ? 0 : (headerOffset != -getMaxOffset() ? 0 : headerOffset)
+                                            }
+                                        }
+                                        headerData.offset = offset
+                                    }
+                                    return Color.clear
+                                }
+                            )
+                        }
+             
                     }
+                    .frame(width: rect.width - 20)
                 }
                 BottomNav(scrollProxy: $scrollProxy)
                     .ignoresSafeArea(.all)
             }
         }
-        
-      
     }
-    func getMaxOffset() -> CGFloat{
         
+    
+    func getMaxOffset() -> CGFloat{
         return headerData.startMinY + (edges?.top ?? 0) + 10
     }
 }
@@ -149,3 +128,4 @@ struct ContentView_Previews: PreviewProvider {
         }
     }
 }
+
