@@ -22,6 +22,13 @@ struct ContentView: View {
     @State private var showReferral = true
     @State var scrollProxy: ScrollViewProxy?
     
+    @StateObject var headerData = HeaderViewModel()
+    
+    
+    init() {
+        UIScrollView.appearance().bounces = false
+    }
+    
     var body: some View {
         NavigationStack {
             
@@ -31,9 +38,10 @@ struct ContentView: View {
                     ZStack(alignment: .top, content: {
                         TopMenu()
                             .zIndex(1)
+                            .offset(y: headerData.headerOffset)
+                        
                     })
                     BackToTopScrollView(scrollProxy: $scrollProxy) { proxy in
-                        
                         
                         ScrollView(.vertical, showsIndicators: false, content: {
                             HStack{
@@ -51,15 +59,70 @@ struct ContentView: View {
                             OutstandingPayments()
                             
                         })
-                        .frame(width: rect.width - 20)
-                   
                         
+                        .overlay(
+                            GeometryReader {proxy -> Color in
+                                let minY = proxy.frame(in: .global).minY
+                             
+                                DispatchQueue.main.async {
+                                    if headerData.startMinY == 0 {
+                                        headerData.startMinY = minY
+                                    }
+                                    let offset = headerData.startMinY - minY
+                                    
+                                    if offset > headerData.offset {
+                            
+                                        headerData.bottomScrollOffset = 0
+                                        
+                                        if headerData.topScrollOffset == 0 {
+                                            headerData.topScrollOffset = offset
+                                        }
+                                        let progress = (headerData.topScrollOffset +
+                                                        getMaxOffset()) - offset
+                                        
+                                        let offsetCondition = (headerData.topScrollOffset + getMaxOffset()) >= getMaxOffset() && getMaxOffset() - progress <= getMaxOffset()
+                                        
+                                        let headerOffset = offsetCondition ? -(getMaxOffset() - progress) : -getMaxOffset()
+                                        
+                                        headerData.headerOffset = headerOffset
+
+                                    }
+                                    if offset < headerData.offset {
+                                        
+                                        headerData.topScrollOffset = 0
+                                        
+                                        if headerData.bottomScrollOffset == 0 {
+                                            headerData.bottomScrollOffset = offset
+                                        }
+                                
+                                    withAnimation(.easeOut(duration: 0.25)) {
+                                        let headerOffset = headerData.headerOffset
+                                        
+                                        headerData.headerOffset =
+                                        headerData.bottomScrollOffset > offset + 40
+                                        ? 0 : (headerOffset != -getMaxOffset() ? 0 : headerOffset)
+                                    }
+                                    }
+                                    headerData.offset = offset
+                                }
+                                return Color.clear
+                            }
+                                .frame(height: 0),
+                            alignment: .top
+                        )
+                     .frame(width: rect.width - 20)
                     }
                 }
-                    BottomNav(scrollProxy: $scrollProxy)
-                        .ignoresSafeArea(.all)
+                BottomNav(scrollProxy: $scrollProxy)
+                    .ignoresSafeArea(.all)
             }
         }
+        
+      
+    }
+    func getMaxOffset() -> CGFloat{
+        
+        return headerData.startMinY + (edges?.top ?? 0) + 10
     }
 }
 
