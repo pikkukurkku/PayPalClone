@@ -23,11 +23,9 @@ struct CircleButton: View {
 }
 
 
+
+
 struct TopMenu: View {
-  //  @Binding var tabState: Visibility
- //   @State private var tabState: Visibility = .visible
-   // @State private var lastOffset: CGFloat = 0
-    //@State private var isTopMenuVisible: Bool = true
     
     var body: some View {
         HStack {
