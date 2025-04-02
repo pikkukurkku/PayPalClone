@@ -11,13 +11,13 @@ struct CircleButton: View {
     let systemImage: String
     
     var body: some View {
-            Circle()
-                .fill(Color.white)
-                .frame(width: 50)
-                .overlay(
-            Image(systemName: systemImage)
-                .foregroundColor(.blue)
-                .bold()
+        Circle()
+            .fill(Color.white)
+            .frame(width: 50)
+            .overlay(
+                Image(systemName: systemImage)
+                    .foregroundColor(.blue)
+                    .bold()
             )
     }
 }
@@ -28,14 +28,20 @@ struct TopMenu: View {
     var body: some View {
         HStack {
             CircleButton(systemImage: "line.3.horizontal")
-            Spacer()
             CircleButton(systemImage: "questionmark")
             CircleButton(systemImage: "qrcode")
             NavigationLink(destination: ProfileView()) {
                 CircleButton(systemImage: "person")
             }
             .buttonStyle(PlainButtonStyle())
+            .frame(maxWidth: .infinity, alignment: .trailing)
         }
         .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
+}
+
+
+#Preview {
+    TopMenu()
 }

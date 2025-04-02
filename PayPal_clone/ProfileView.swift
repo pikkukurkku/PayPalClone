@@ -11,7 +11,6 @@ struct ProfileView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var systemImage: [String] = ["questionmark.circle", "person", "shield", "eye", "bell.badge", "dollarsign.circle"]
     @State var menuText: [String] = ["Help", "Account info", "Login and security", "Data and privacy", "Notification preferences", "Marketing preferences"]
-    //////TO DO - for each loop
     
     
     var body: some View {
@@ -24,30 +23,24 @@ struct ProfileView: View {
                         List {
                             ForEach(Array(zip(systemImage, menuText)), id: \.0) { image, text in
                                 HStack {
-                                                Image(systemName: image)
-                                                    .frame(width: 30)
-                                                    .multilineTextAlignment(.center)
-                                                    .foregroundColor( .black)
-                                                
-                                                Text(text)
-                                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                                    .font(.caption)
-                                                    .foregroundColor( .black)
-                                            }
-                              
-                                            .listRowSeparator(.hidden)
-                                            .padding(.vertical, 6)
-                                        }
-                            .listRowBackground(Color.white)
-                                    }
-                     
-                        .scrollContentBackground(.hidden)
-                
+                                    Image(systemName: image)
+                                        .frame(width: 30)
+                                        .multilineTextAlignment(.center)
+                                        .foregroundColor( .black)
+                                    Text(text)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .font(.caption)
+                                        .foregroundColor( .black)
                                 }
-                    
+                                .listRowSeparator(.hidden)
+                                .padding(.vertical, 6)
+                            }
+                            .listRowBackground(Color.white)
+                        }
+                        .scrollContentBackground(.hidden)
+                    }
                     .cornerRadius(18)
                     .frame(minHeight: 1000)
-           
                 }
                 .navigationBarBackButtonHidden(true)
                 .toolbar {
@@ -55,27 +48,30 @@ struct ProfileView: View {
                         Button(action: {
                             presentationMode.wrappedValue.dismiss()
                         }) {
-                            HStack (alignment: .center) {
-                                Image(systemName: "chevron.left")
-                                Spacer()
-                                Text("Profile")
-                                    .font(.caption)
-                                Spacer()
-                                NavigationLink(destination: NotificationsView()) {
-                                    Image(systemName: "bell")
-                                }
-                                .buttonStyle(PlainButtonStyle())
-                            }
-                            .foregroundColor(.black)
-                            .padding()
-                            .frame(width: UIScreen.main.bounds.width)
+                            Image(systemName: "chevron.left")
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }
+                    ToolbarItem(placement: .principal) {
+                        Text("Profile")
+                            .font(.caption)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        NavigationLink(destination: NotificationsView()) {
+                            Image(systemName: "bell")
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .padding()
+                    }
                 }
+                .foregroundColor(.black)
+                .frame(width: UIScreen.main.bounds.width)
             }
         }
     }
 }
+
 
 
 struct ProfileTile: View {
@@ -99,7 +95,6 @@ struct ProfileTile: View {
                     }
                     ,alignment: .top)
             VStack (spacing: 6) {
-                Spacer()
                 ZStack {
                     Image("Unknown4")
                         .resizable()
@@ -139,7 +134,8 @@ struct ProfileTile: View {
                         .bold()
                         .font(.caption)
                         .padding(8)
-                        .padding(.horizontal, 12)                        .background(Color.white)
+                        .padding(.horizontal, 12)
+                        .background(Color.white)
                         .clipShape(Capsule())
                         .overlay(
                             Capsule()
@@ -150,9 +146,7 @@ struct ProfileTile: View {
                 .buttonStyle(PlainButtonStyle())
                 .padding(0)
             }
-            
             .frame(height: 250)
-            
         }
         .frame( maxHeight: .infinity, alignment: .top)
     }

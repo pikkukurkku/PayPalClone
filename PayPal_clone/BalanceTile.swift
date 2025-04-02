@@ -21,8 +21,8 @@ struct BalanceTile: View {
                     .font(.title2)
                     .bold()
                     .foregroundColor(.black)
-                Spacer()
             }
+            .frame(maxHeight: .infinity, alignment: .topLeading)
             .padding()
         }
     }

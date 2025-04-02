@@ -23,7 +23,6 @@ struct InfoTile: View {
                 Text("Track money with friends for gifts, trips, and more")
                     .font(.caption)
                     .foregroundColor(.black)
-                Spacer()
                 Button("Create a pool") {
                     showSheet.toggle()
                 }
@@ -33,6 +32,7 @@ struct InfoTile: View {
                         PoolScreen()
                     }
                 .font(.caption)
+                .frame(maxHeight: .infinity, alignment: .bottom)
             }
                 )
             .padding()
@@ -56,21 +56,20 @@ struct InfoTile: View {
                                            .padding()
                                            .font(.title)
                                    }
-                                   Spacer()
                                }
+                               .frame(maxWidth: .infinity, alignment: .leading)
+                               .frame(maxHeight: .infinity, alignment: .top)
                                .padding()
-                               Spacer()
                                Text("Create a pool!")
                                    .font(.title2)
                                    .bold()
-                              Spacer()
+                                   .frame(maxHeight: .infinity, alignment: .top)
                            }
-                           .frame(maxWidth: .infinity, maxHeight: .infinity)
                                   .background(Color.yellow.ignoresSafeArea())
                        }
                    }
                    
 #Preview {
-    InfoTile()
+  //  InfoTile()
     PoolScreen()
 }

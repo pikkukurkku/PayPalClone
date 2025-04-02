@@ -18,7 +18,7 @@ struct PaymentsList: View {
     
     
     var body: some View {
-       
+        
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(imageName)
@@ -26,35 +26,51 @@ struct PaymentsList: View {
                     .aspectRatio(contentMode: .fill)
                     .scaledToFit()
                     .frame(width: 50, height: 30)
-                Spacer()
-                VStack(alignment: .leading) {
+                
+                VStack(alignment: .trailing) {
                     Text(merchantName)
-                        .font(.headline)
+                        .font(.subheadline)
                         .bold()
                     Text(dueDate)
                         .foregroundColor(.gray)
                         .font(.caption)
                 }
+                .frame(maxWidth: .infinity, alignment: .trailing)
             }
             .padding(.horizontal)
             HStack {
                 Text(paymentType)
-                Spacer()
+                
                 Text(amount)
                     .font(.headline)
                     .bold()
+                    .frame(maxWidth: .infinity, alignment: .trailing)
             }
             .foregroundColor(.gray)
             .font(.caption)
             .padding(.horizontal)
-            if !isLastItem {
-                Rectangle()
-                    .frame(height: 1)
-                    .foregroundColor(.gray)
-                    .padding(.top)
-            }
+            
         }
-                           .padding(.top, 10)
-                       }
-                   }
+        
+        .padding(.top, 10)
+        .padding(.horizontal, 5)
+        if !isLastItem {
+            Rectangle()
+                .frame(height: 1)
+                .foregroundColor(Color(hex: "#E7EFF6"))
+        }
+    }
+}
 
+
+
+#Preview {
+    PaymentsList(
+        imageName: "Zalando",
+        merchantName:"vregvcecwewcecewcewc",
+        dueDate: "fewfcwe",
+        paymentType: "cewcfwe",
+        amount: "cewcfew",
+        isLastItem: false
+    )
+}

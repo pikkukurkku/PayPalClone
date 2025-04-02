@@ -29,9 +29,8 @@ struct ContentView: View {
                     BackToTopScrollView(scrollProxy: $scrollProxy) { proxy in
                         ScrollView(.vertical, showsIndicators: false) {
                             VStack {
-                                HStack{
+                                HStack(spacing: 20){
                                     BalanceTile()
-                                    Spacer(minLength: 20)
                                     InfoTile()
                                 }
                                 .padding()
@@ -42,6 +41,8 @@ struct ContentView: View {
                                 }
                                 SendMoneyInternationally()
                                 OutstandingPayments()
+                                SendMoneyInternationally()
+                                SendMoneyInternationally()
                             }
                             .overlay(
                                 GeometryReader {proxy -> Color in

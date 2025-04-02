@@ -48,5 +48,5 @@ struct SendMoneyInternationally: View {
 }
 
 #Preview {
-   // SendMoneyInternationally()
+    // SendMoneyInternationally()
 }

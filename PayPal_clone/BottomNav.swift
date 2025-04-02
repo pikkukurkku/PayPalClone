@@ -39,7 +39,6 @@ struct BottomNav: View {
     
     var body: some View {
         VStack {
-            Spacer()
             ZStack {
                 Rectangle()
                     .fill(Color.white)
@@ -89,6 +88,15 @@ struct BottomNav: View {
          
                 .font(.title3)
             }
+            .frame(maxHeight: .infinity, alignment: .bottom)
         }
     }
 }
+
+
+
+#Preview {
+    @State var scrollProxy: ScrollViewProxy? = nil
+    return BottomNav(scrollProxy: $scrollProxy)
+}
+
